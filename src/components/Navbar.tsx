@@ -1,68 +1,48 @@
 'use client';
 
-import { useState } from 'react';
-import Link from 'next/link';
+import Link from "next/link";
 
-export default function FloatingNavbar() {
-  const [isOpen, setIsOpen] = useState(false);
+import {
+   ShoppingCart,
+ } from "lucide-react"; 
 
+export default function Navabar() {
+ 
   return (
     <>
-      {/* Floating Navbar */}
-      <nav className="fixed top-6 left-1/2 transform -translate-x-1/2 z-50 bg-white dark:bg-black border border-zinc-200 dark:border-zinc-800 rounded-full shadow-lg px-6 py-3">
-        <div className="flex items-center justify-between gap-8">
-          {/* Logo */}
-          <Link href="/" className="text-xl font-bold text-black dark:text-zinc-50 hover:text-zinc-600 dark:hover:text-zinc-400 transition-colors">
-            MyBrand
-          </Link>
+      <header className="sticky top-0 z-50 border-b border-white/[0.06] bg-[#0A0A0F]/90 backdrop-blur-xl">
+        <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-6">
+          <div className="flex items-center gap-10">
+            <h1 className="text-xl font-bold tracking-tight">
+              Shop<span className="text-cyan-400">ly</span>
+            </h1>
 
-          {/* Desktop Navigation */}
-          <div className="hidden md:flex gap-6 text-sm font-medium">
-            <Link href="/" className="text-black dark:text-zinc-50 hover:text-zinc-600 dark:hover:text-zinc-400 transition-colors">
-              Home
-            </Link>
-            <Link href="/about" className="text-black dark:text-zinc-50 hover:text-zinc-600 dark:hover:text-zinc-400 transition-colors">
-              About
-            </Link>
-            <Link href="/about/teams" className="text-black dark:text-zinc-50 hover:text-zinc-600 dark:hover:text-zinc-400 transition-colors">
-              Team
-            </Link>
-            <Link href="/contact" className="text-black dark:text-zinc-50 hover:text-zinc-600 dark:hover:text-zinc-400 transition-colors">
-              Contact
-            </Link>
+            <nav className="hidden items-center gap-6 md:flex">
+              <Link
+                href="/"
+                className="text-sm font-medium text-white"
+              >
+                Products
+              </Link>
+
+            
+            </nav>
           </div>
 
-          {/* Mobile Menu Button */}
           <button
-            onClick={() => setIsOpen(!isOpen)}
-            className="md:hidden flex flex-col gap-1.5 w-6 h-6"
+            className="relative rounded-xl border border-white/[0.08] bg-white/[0.03] p-2.5 transition hover:bg-white/[0.07]"
+            aria-label="Shopping cart"
           >
-            <span className={`h-0.5 w-full bg-black dark:bg-white transition-all ${isOpen ? 'rotate-45 translate-y-2' : ''}`}></span>
-            <span className={`h-0.5 w-full bg-black dark:bg-white transition-all ${isOpen ? 'opacity-0' : ''}`}></span>
-            <span className={`h-0.5 w-full bg-black dark:bg-white transition-all ${isOpen ? '-rotate-45 -translate-y-2' : ''}`}></span>
+            <Link href="/cart">
+                        <ShoppingCart className="h-5 w-5" />
+
+            </Link>
+
+         
+          
           </button>
         </div>
-      </nav>
-
-      {/* Mobile Menu */}
-      {isOpen && (
-        <div className="fixed top-20 left-1/2 transform -translate-x-1/2 z-40 md:hidden bg-white dark:bg-black border border-zinc-200 dark:border-zinc-800 rounded-lg shadow-lg p-4 w-48">
-          <div className="flex flex-col gap-4">
-            <Link href="/" onClick={() => setIsOpen(false)} className="text-black dark:text-zinc-50 hover:text-zinc-600 dark:hover:text-zinc-400 transition-colors">
-              Home
-            </Link>
-            <Link href="/about" onClick={() => setIsOpen(false)} className="text-black dark:text-zinc-50 hover:text-zinc-600 dark:hover:text-zinc-400 transition-colors">
-              About
-            </Link>
-            <Link href="/about/teams" onClick={() => setIsOpen(false)} className="text-black dark:text-zinc-50 hover:text-zinc-600 dark:hover:text-zinc-400 transition-colors">
-              Team
-            </Link>
-            <Link href="/contact" onClick={() => setIsOpen(false)} className="text-black dark:text-zinc-50 hover:text-zinc-600 dark:hover:text-zinc-400 transition-colors">
-              Contact
-            </Link>
-          </div>
-        </div>
-      )}
+      </header>
     </>
   );
 }
