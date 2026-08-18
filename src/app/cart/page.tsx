@@ -3,8 +3,7 @@
 import useGetCartProducts from "@/hooks/useGetCartProducts"; // swap for your real hook
 import { useState } from "react";
 import { Package, User, Calendar, ChevronRight } from "lucide-react";
-
-export type OrderProduct = {
+ export type OrderProduct = {
   productId: number;
   quantity: number;
 };
@@ -16,6 +15,7 @@ export type Order = {
   products: OrderProduct[];
   __v?: number;
 };
+
 
 export default function OrdersPage() {
   const [expandedId, setExpandedId] = useState<number | null>(null);
