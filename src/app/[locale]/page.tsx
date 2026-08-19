@@ -1,16 +1,16 @@
 "use client";
 
-import useGetProducts from "@/hooks/useGetProducts";
+import { useTranslations } from "next-intl";
 import Image from "next/image";
 import { useMemo, useState } from "react";
 import {
   Search,
-  ShoppingCart,
   SlidersHorizontal,
   Star,
   ChevronDown,
 } from "lucide-react";
-import Link from "next/link";
+
+import useGetProducts from "@/hooks/useGetProducts";
 import ProductCardSkeleton from "./loading";
 
 export type Product = {
@@ -32,17 +32,19 @@ const categories = [
   "jewelery",
   "men's clothing",
   "women's clothing",
-];
+] as const;
+
+type Category = (typeof categories)[number];
 
 export default function ProductsPage() {
+  const t = useTranslations("product_page");
+
   const [search, setSearch] = useState("");
-  const [category, setCategory] = useState("All");
+  const [category, setCategory] = useState<Category>("All");
   const [sort, setSort] = useState("featured");
-  const [cartCount, setCartCount] = useState(0);
 
-  const { products, isPending,isSuccess, error } = useGetProducts();
+  const { products, isPending, error } = useGetProducts();
 
-  // Filter + sort the raw product list based on current controls.
   const filteredProducts = useMemo(() => {
     const raw: Product[] = products?.data ?? [];
 
@@ -61,15 +63,17 @@ export default function ProductsPage() {
       return matchesCategory && matchesSearch;
     });
 
-    // Sort without mutating the filtered array in place.
     result = [...result].sort((a, b) => {
       switch (sort) {
         case "price-low":
           return a.price - b.price;
+
         case "price-high":
           return b.price - a.price;
+
         case "rating":
           return b.rating.rate - a.rating.rate;
+
         case "featured":
         default:
           return 0;
@@ -79,18 +83,26 @@ export default function ProductsPage() {
     return result;
   }, [products, search, category, sort]);
 
+  /*
+   * Loading state
+   */
   if (isPending) {
     return <ProductCardSkeleton />;
   }
 
+  /*
+   * Error state
+   */
   if (error) {
     return (
       <main className="flex min-h-screen items-center justify-center bg-[#0A0A0F] text-white">
         <div className="text-center">
-          <h2 className="text-xl font-semibold">Failed to load products</h2>
+          <h2 className="text-xl font-semibold">
+            {t("errors.load_failed")}
+          </h2>
 
           <p className="mt-2 text-sm text-zinc-500">
-            Something went wrong while fetching products.
+            {t("errors.load_description")}
           </p>
         </div>
       </main>
@@ -99,45 +111,56 @@ export default function ProductsPage() {
 
   return (
     <main className="min-h-screen bg-[#0A0A0F] text-white">
-      {/* Navbar */}
-
       <div className="mx-auto max-w-7xl px-6 py-10">
-        {/* Hero */}
+        {/* =========================================
+            HERO
+        ========================================= */}
         <section className="mb-10">
+          {/* Breadcrumbs */}
           <div className="mb-2 flex items-center gap-2 text-sm text-zinc-500">
-            <span>Home</span>
+            <span>{t("breadcrumbs.home")}</span>
+
             <span>/</span>
-            <span className="text-zinc-300">Products</span>
+
+            <span className="text-zinc-300">
+              {t("breadcrumbs.products")}
+            </span>
           </div>
 
+          {/* Heading */}
           <div className="flex flex-col justify-between gap-6 md:flex-row md:items-end">
             <div>
-              <h2 className="text-4xl font-bold tracking-tight md:text-5xl">
-                Discover products
-              </h2>
+              <h1 className="text-4xl font-bold tracking-tight md:text-5xl">
+                {t("headings.discover_products")}
+              </h1>
 
               <p className="mt-3 max-w-xl text-zinc-400">
-                Find products you&apos;ll love, from everyday essentials to
-                premium products.
+                {t("headings.description")}
               </p>
             </div>
 
+            {/* Product count */}
             <div className="text-sm text-zinc-500">
-              {filteredProducts.length} products
+              {t("headings.product_count", {
+                count: filteredProducts.length,
+              })}
             </div>
           </div>
         </section>
 
-        {/* Search + Sort */}
+        {/* =========================================
+            SEARCH + SORT
+        ========================================= */}
         <section className="mb-8 flex flex-col gap-3 lg:flex-row">
           {/* Search */}
           <div className="relative flex-1">
             <Search className="absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-zinc-500" />
 
             <input
+              type="text"
               value={search}
-              onChange={(e) => setSearch(e.target.value)}
-              placeholder="Search products..."
+              onChange={(event) => setSearch(event.target.value)}
+              placeholder={t("search.placeholder")}
               className="h-12 w-full rounded-xl border border-white/[0.08] bg-white/[0.03] pl-12 pr-4 text-sm outline-none transition placeholder:text-zinc-600 focus:border-cyan-400/40 focus:bg-white/[0.05]"
             />
           </div>
@@ -148,23 +171,35 @@ export default function ProductsPage() {
 
             <select
               value={sort}
-              onChange={(e) => setSort(e.target.value)}
+              onChange={(event) => setSort(event.target.value)}
               className="h-12 min-w-[190px] appearance-none rounded-xl border border-white/[0.08] bg-white/[0.03] pl-11 pr-10 text-sm text-zinc-300 outline-none focus:border-cyan-400/40"
             >
-              <option value="featured" className="bg-[#12121A]">
-                Featured
+              <option
+                value="featured"
+                className="bg-[#12121A]"
+              >
+                {t("sort.featured")}
               </option>
 
-              <option value="price-low" className="bg-[#12121A]">
-                Price: Low to High
+              <option
+                value="price-low"
+                className="bg-[#12121A]"
+              >
+                {t("sort.price_low")}
               </option>
 
-              <option value="price-high" className="bg-[#12121A]">
-                Price: High to Low
+              <option
+                value="price-high"
+                className="bg-[#12121A]"
+              >
+                {t("sort.price_high")}
               </option>
 
-              <option value="rating" className="bg-[#12121A]">
-                Highest Rated
+              <option
+                value="rating"
+                className="bg-[#12121A]"
+              >
+                {t("sort.highest_rated")}
               </option>
             </select>
 
@@ -172,7 +207,9 @@ export default function ProductsPage() {
           </div>
         </section>
 
-        {/* Categories */}
+        {/* =========================================
+            CATEGORIES
+        ========================================= */}
         <section className="mb-8 overflow-x-auto">
           <div className="flex min-w-max gap-2">
             {categories.map((item) => {
@@ -188,21 +225,24 @@ export default function ProductsPage() {
                       : "border border-white/[0.08] bg-white/[0.03] text-zinc-400 hover:bg-white/[0.07] hover:text-white"
                   }`}
                 >
-                  {item}
+                  {getCategoryTranslation(t, item)}
                 </button>
               );
             })}
           </div>
         </section>
 
-        {/* Product Grid */}
+        {/* =========================================
+            PRODUCT GRID
+        ========================================= */}
         {filteredProducts.length === 0 ? (
           <div className="flex flex-col items-center justify-center rounded-2xl border border-white/[0.07] bg-[#12121A] px-6 py-20 text-center">
             <h3 className="text-lg font-semibold text-white">
-              No products found
+              {t("empty.title")}
             </h3>
+
             <p className="mt-2 max-w-sm text-sm text-zinc-500">
-              Try adjusting your search or selecting a different category.
+              {t("empty.description")}
             </p>
           </div>
         ) : (
@@ -211,7 +251,8 @@ export default function ProductsPage() {
               <ProductCard
                 key={product.id}
                 product={product}
-                onAddToCart={() => setCartCount((count) => count + 1)}
+                addToCartLabel={t("actions.add_to_cart")}
+                reviewsLabel={t("reviews")}
               />
             ))}
           </section>
@@ -221,12 +262,47 @@ export default function ProductsPage() {
   );
 }
 
+/* =========================================
+   CATEGORY TRANSLATION
+========================================= */
+
+function getCategoryTranslation(
+  t: ReturnType<typeof useTranslations<"product_page">>,
+  category: Category
+) {
+  switch (category) {
+    case "All":
+      return t("filters.all");
+
+    case "electronics":
+      return t("filters.electronics");
+
+    case "jewelery":
+      return t("filters.jewelery");
+
+    case "men's clothing":
+      return t("filters.mens_clothing");
+
+    case "women's clothing":
+      return t("filters.womens_clothing");
+
+    default:
+      return category;
+  }
+}
+
+/* =========================================
+   PRODUCT CARD
+========================================= */
+
 function ProductCard({
   product,
-  onAddToCart,
+  addToCartLabel,
+  reviewsLabel,
 }: {
   product: Product;
-  onAddToCart: () => void;
+  addToCartLabel: string;
+  reviewsLabel: string;
 }) {
   return (
     <article className="group overflow-hidden rounded-2xl border border-white/[0.07] bg-[#12121A] transition duration-300 hover:-translate-y-1 hover:border-white/[0.13]">
@@ -246,7 +322,7 @@ function ProductCard({
         </div>
       </div>
 
-      {/* Content */}
+      {/* Product Content */}
       <div className="p-4">
         {/* Title */}
         <h3 className="line-clamp-2 min-h-[48px] font-semibold text-white">
@@ -258,23 +334,24 @@ function ProductCard({
           <div className="flex items-center gap-1">
             <Star className="h-3.5 w-3.5 fill-yellow-400 text-yellow-400" />
 
-            <span className="text-sm font-medium">{product.rating.rate}</span>
+            <span className="text-sm font-medium">
+              {product.rating.rate}
+            </span>
           </div>
 
           <span className="text-xs text-zinc-600">
-            ({product.rating.count} reviews)
+            ({product.rating.count} {reviewsLabel})
           </span>
         </div>
 
         {/* Price + Cart */}
         <div className="mt-4 flex items-center justify-between gap-3">
-          <span className="text-xl font-bold">${product.price.toFixed(2)}</span>
+          <span className="text-xl font-bold">
+            ${product.price.toFixed(2)}
+          </span>
 
-          <button
-            onClick={onAddToCart}
-            className="rounded-lg bg-white px-3.5 py-2 text-xs font-semibold text-black transition hover:bg-cyan-400"
-          >
-            Add to cart
+          <button className="rounded-lg bg-white px-3.5 py-2 text-xs font-semibold text-black transition hover:bg-cyan-400">
+            {addToCartLabel}
           </button>
         </div>
       </div>

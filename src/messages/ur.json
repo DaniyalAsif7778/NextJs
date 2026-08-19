@@ -1,0 +1,46 @@
+{
+  "Navbar": {
+    "shop": "دکان",
+    "products": "مصنوعات"
+  },
+  "product_page": {
+    "breadcrumbs": {
+      "home": "ہوم",
+      "products": "مصنوعات"
+    },
+    "headings": {
+      "discover_products": "مصنوعات دریافت کریں",
+      "description": "ایسی مصنوعات تلاش کریں جو آپ کو پسند آئیں، روزمرہ کی ضروریات سے لے کر اعلیٰ معیار کی مصنوعات تک۔",
+      "product_count": "{count} مصنوعات"
+    },
+    "search": {
+      "placeholder": "مصنوعات تلاش کریں..."
+    },
+    "filters": {
+      "featured": "نمایاں",
+      "all": "تمام",
+      "electronics": "الیکٹرانکس",
+      "jewelery": "زیورات",
+      "mens_clothing": "مردوں کے کپڑے",
+      "womens_clothing": "خواتین کے کپڑے"
+    },
+    "sort": {
+      "featured": "نمایاں",
+      "price_low": "قیمت: کم سے زیادہ",
+      "price_high": "قیمت: زیادہ سے کم",
+      "highest_rated": "سب سے زیادہ ریٹنگ"
+    },
+    "empty": {
+      "title": "کوئی مصنوعات نہیں ملیں",
+      "description": "اپنی تلاش کو تبدیل کریں یا کوئی مختلف کیٹیگری منتخب کریں۔"
+    },
+    "errors": {
+      "load_failed": "مصنوعات لوڈ کرنے میں ناکامی",
+      "load_description": "مصنوعات حاصل کرتے وقت کچھ غلط ہو گیا۔"
+    },
+    "actions": {
+      "add_to_cart": "کارٹ میں شامل کریں"
+    },
+    "reviews": "جائزے"
+  }
+}

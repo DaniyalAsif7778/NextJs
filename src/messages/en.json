@@ -1,0 +1,46 @@
+{
+  "Navbar": {
+    "shop": "shop",
+    "products": "products"
+  },
+  "product_page": {
+    "breadcrumbs": {
+      "home": "Home",
+      "products": "Products"
+    },
+    "headings": {
+      "discover_products": "Discover products",
+      "description": "Find products you'll love, from everyday essentials to premium products.",
+      "product_count": "{count} products"
+    },
+    "search": {
+      "placeholder": "Search products..."
+    },
+    "filters": {
+      "featured": "Featured",
+      "all": "All",
+      "electronics": "electronics",
+      "jewelery": "jewelery",
+      "mens_clothing": "men's clothing",
+      "womens_clothing": "women's clothing"
+    },
+    "sort": {
+      "featured": "Featured",
+      "price_low": "Price: Low to High",
+      "price_high": "Price: High to Low",
+      "highest_rated": "Highest Rated"
+    },
+    "empty": {
+      "title": "No products found",
+      "description": "Try adjusting your search or selecting a different category."
+    },
+    "errors": {
+      "load_failed": "Failed to load products",
+      "load_description": "Something went wrong while fetching products."
+    },
+    "actions": {
+      "add_to_cart": "Add to cart"
+    },
+    "reviews": "reviews"
+  }
+}
